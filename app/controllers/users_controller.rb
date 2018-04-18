@@ -25,19 +25,31 @@ class UsersController < ApplicationController
   # POST /users
   # POST /users.json
   def create
-    #complete this method
+    @user = User.new(user_params)
+    if @user.save
+      redirect_to @user, notice: "Thanks for signing up!"
+    else
+      redirect_to registrations_path, notice: @user.errors.full_messages.to_sentence
+    end
   end
 
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json
   def update
-    #complete this method
+    @user = current_user
+    if @user.update(user_params)
+      redirect_to @user, notice: "Account successfully updated!"
+    else
+      render :edit, notice: @user.errors.full_messages.to_sentence
+    end
   end
 
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
-    #complete this method
+    @user = User.find(params[:id])
+    @user.destroy
+    redirect_to root_url, notice: "Account successfully deleted!"
   end
 
   private
